@@ -212,7 +212,7 @@ def install_node10():
                 return True
 
         version = '0.10.26'
-        node_url = 'http://nodejs.org/dist/v{0}/node-v{0}-linux-arm-pi.tar.gz'
+        node_url = 'http://nodejs.org/dist/v{0}/node-v{0}.tar.gz'
         require.file(url=node_url.format(version))
         run('tar -xzvf node-v%s-linux-arm-pi.tar.gz' % version)
         delete_if_exists('/opt/node')

@@ -752,6 +752,16 @@ def reset_controller_token():
 
 
 @task
+def reset_ssh_keys():
+    '''
+    Reset SSH server keys
+    '''
+    sudo("rm -v /etc/ssh/ssh_host_*")
+    sudo("dpkg-reconfigure openssh-server")
+    print(green('SSH keys have been regenerated.'))
+    
+    
+@task
 def reset_security_tokens():
     '''
     Reset all the security tokens for the Cozy (SSL certificates,
@@ -762,6 +772,13 @@ def reset_security_tokens():
     reset_controller_token()
     config_couchdb()
     print(green('All the tokens have been reset.'))
+    
+    if is_pi():
+        reset_ssh_keys()
+        print(green('''
+Please run `ssh-keygen -R <ip.of.raspberry>` to be able to reconnect
+to your RaspberryPi via SSH.
+'''))
 
 
 """Uninstall tasks"""

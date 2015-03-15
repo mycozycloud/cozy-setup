@@ -235,6 +235,7 @@ def install_node10():
         if distrib in ['Debian', 'Ubuntu']:
             sudo('DEBIAN_FRONTEND=noninteractive apt-get --quiet update')
             sudo('DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes nodejs npm')
+            sudo('ln -s /usr/bin/nodejs /usr/local/bin/node')
         else:
             print(
                 red('Error: Unsuported arm distribution: {}'.format(distrib)))

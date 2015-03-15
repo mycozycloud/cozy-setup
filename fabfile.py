@@ -47,6 +47,12 @@ def is_pi():
     return 'armv6l' in result
 
 
+@task
+def is_arm():
+    result = run('lscpu', quiet=True)
+    return 'armv' in result
+
+
 def print_failed(module):
     print(red('Installation of %s failed.\n' +
               'You can join us on our IRC channel: '
@@ -223,6 +229,16 @@ def install_node10():
         sudo('ln -s /opt/node/bin/node /usr/bin/node')
         sudo('ln -s /opt/node/bin/npm /usr/local/bin/npm')
         sudo('ln -s /opt/node/bin/npm /usr/bin/npm')
+
+    elif is_arm:
+        distrib = system.distrib_id()
+        if distrib in ['Debian', 'Ubuntu']:
+            sudo('DEBIAN_FRONTEND=noninteractive apt-get --quiet update')
+            sudo('DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes nodejs npm')
+        else:
+            print(
+                red('Error: Unsuported arm distribution: {}'.format(distrib)))
+            print_failed('nodejs')
 
     else:
         require.nodejs.installed_from_source('0.10.26')
